@@ -3,7 +3,7 @@ package com.jivesoftware.boundaries.restz.usecase.box;
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
 import com.jivesoftware.boundaries.restz.ResTZ;
-import com.jivesoftware.boundaries.restz.hc432.HC432ExecutorFactory;
+import com.jivesoftware.boundaries.restz.hc435.HC435ExecutorFactory;
 import com.jivesoftware.boundaries.restz.layers.oauth2.OAuth2Client;
 import com.jivesoftware.boundaries.restz.layers.oauth2.OAuth2Token;
 import com.jivesoftware.boundaries.restz.usecase.box.api.BoxApi;
@@ -30,7 +30,7 @@ public final class Engine
     {
         // Injection Code
         HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        ExecutorFactory executorFactory = new HC432ExecutorFactory(httpClientConnectionManager);
+        ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
 
         OAuth2Client client = prepareOAuth2Client();
         OAuth2Token token = prepareOAuth2Token();

@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.jivesoftware.boundaries.restz</groupId>
-            <artifactId>restz-hc432</artifactId>
+            <artifactId>restz-hc435</artifactId>
             <version>${restz-version}</version>
         </dependency>
 

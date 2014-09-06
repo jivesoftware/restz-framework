@@ -12,11 +12,12 @@
     </parent>
 
     <groupId>com.jivesoftware.boundaries.restz</groupId>
-    <artifactId>restz-hc432</artifactId>
+    <artifactId>restz-hc435</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <http-client-version>4.3.2</http-client-version>
+        <http-client-version>4.3.5</http-client-version>
+        <http-core-version>4.3.2</http-core-version>
     </properties>
 
     <dependencies>
@@ -33,7 +34,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
-            <version>${http-client-version}</version>
+            <version>${http-core-version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
