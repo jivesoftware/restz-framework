@@ -7,7 +7,7 @@
 
     <groupId>com.jivesoftware.boundaries</groupId>
     <artifactId>restz-framework</artifactId>
-    <version>1.0-RELEASE</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
