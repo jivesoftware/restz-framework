@@ -94,7 +94,7 @@ Threading		 | `Executor` cannot execute multiple requests simultaneously, becaus
 Async   		 | Async operations aren't supported yet. This will be addressed in the near future, but for the time being, you must handle async requests manually (e.g., by running the `ResTZ` executor in a side-thread).
 DateFormat		 | The default `ResponseReadingStrategy` and its default `Serializer` component are set to parse and format `Date` fields according to  ISO-8601 ([RFC-3339](https://www.ietf.org/rfc/rfc3339.txt)) standard. For example, the moment of **Nov 05 08:15:30 AM EST 1994** will match both **1994-11-05T08:15:30-05:00** and **1994-11-05T13:15:30Z**.
 `ResTZ` Overrides	| The `ResTZ`'s constructor accepts optional `LayerCollection` and/or `ResponseReadingStrategy` that will affect every request it executes. Those can be overridden on per-execution basis.
-Request Overrides	| It happens often that we want to configure a timeout for the entire connection pool and at the same time, to be able to override it for a specific request. In such a case, we'd need to inherit from the connector's HC###ExecutorFactory and provide ourselves another `get(long timeout)` method.
+Request Overrides	| It often happens that we want to configure a timeout for the entire connection pool and at the same time, to be able to override it for a specific request. In such a case, we'd need to inherit from the connector's `HC###ExecutorFactory` and add another `get(long timeout)` method ourselves.
 
 ## Roadmap
 
