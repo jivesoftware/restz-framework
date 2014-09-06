@@ -15,6 +15,7 @@
 
         <module>restz-hc400</module>
         <module>restz-hc432</module>
+        <module>restz-hc435</module>
 
         <module>restz</module>
     </modules>

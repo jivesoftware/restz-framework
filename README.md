@@ -14,7 +14,7 @@ Add the any one of the ResTZ HttpClient connectors as a maven dependency to your
 ```xml
 <dependency>
 	<groupId>com.jivesoftware.boundaries.restz</groupId>
-	<artifactId>restz-hc432</artifactId>
+	<artifactId>restz-hc435</artifactId>
 	<version>1.1-SNAPSHOT</version>
 </dependency>
 ```
@@ -31,7 +31,7 @@ HttpClientConnectionManager connectionPool = new PoolingHttpClientConnectionMana
 
 Create an `ExecutorFactory` with that connection pool
 ```java
-ExecutorFactory executorFactory = new HC432ExecutorFactory(connectionPool);
+ExecutorFactory executorFactory = new HC435ExecutorFactory(connectionPool);
 ```
 
 That it.
