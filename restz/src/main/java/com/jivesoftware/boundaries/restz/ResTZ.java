@@ -9,6 +9,10 @@ import com.jivesoftware.boundaries.restz.layers.RecoverableFailureLayer;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,18 +66,48 @@ public class ResTZ
         return execute(requestBuilder, layers, responseReadingStrategy, tClass);
     }
 
+//    public <T> Future<T> executeAsync(RequestBuilder requestBuilder, LayerCollection layers, ResponseReadingStrategy responseReadingStrategy, Class<T> tClass)
+//    {
+//        try
+//        {
+//            for (ExecutionWrapperLayer wrapper : layers.getWrappers())
+//                wrapper.beforeExecution(requestBuilder);
+//
+//            log.log(Level.INFO, "Executing " + requestBuilder.getHttpVerb() + " " + requestBuilder.getUrl() + " with layer");
+//            Future<Response> futureResponse = executor.execute(requestBuilder);
+//
+//            Future<T> futureResponseEntity = new AsyncExecutionFuture<>(futureResponse, requestBuilder, layers, responseReadingStrategy, tClass);
+//            return futureResponseEntity;
+//        }
+//        catch(IOException e)
+//        {
+//            throw new CheckedAsRuntimeException("Failed to process a request for " + requestBuilder.getUrl() + " - " + e.getMessage(), e);
+//        }
+//    }
+
     public <T> T execute(RequestBuilder requestBuilder, LayerCollection layers, ResponseReadingStrategy responseReadingStrategy, Class<T> tClass)
     {
-        Response response = null;
-
         try
         {
-            for(ExecutionWrapperLayer wrapper : layers.getWrappers())
+            for (ExecutionWrapperLayer wrapper : layers.getWrappers())
                 wrapper.beforeExecution(requestBuilder);
 
             log.log(Level.INFO, "Executing " + requestBuilder.getHttpVerb() + " " + requestBuilder.getUrl() + " with layer");
-            response = executor.execute(requestBuilder);
+            Response response = executor.execute(requestBuilder);
 
+            T responseEntity = afterExecution(requestBuilder, layers, responseReadingStrategy, response, tClass);
+            return responseEntity;
+        }
+        catch(IOException e)
+        {
+            throw new CheckedAsRuntimeException("Failed to process a request for " + requestBuilder.getUrl() + " - " + e.getMessage(), e);
+        }
+    }
+
+    private <T> T afterExecution(RequestBuilder requestBuilder, LayerCollection layers, ResponseReadingStrategy responseReadingStrategy, Response response, Class<T> tClass)
+    {
+        try
+        {
             detectFailures(requestBuilder, layers, response);
 
             for(ExecutionWrapperLayer wrapper : layers.getWrappers())
@@ -92,7 +126,7 @@ public class ResTZ
         }
         catch(IOException e)
         {
-            throw new CheckedAsRuntimeException("Failed to process request " + requestBuilder.getUrl() + " - " + e.getMessage(), e);
+            throw new CheckedAsRuntimeException("Failed to process after execution of " + requestBuilder.getUrl() + " - " + e.getMessage(), e);
         }
     }
 
@@ -156,6 +190,72 @@ public class ResTZ
         public StringResponseEntity(String entity, Status status, MultivaluedMap<String, String> headers)
         {
             super(entity, status, headers);
+        }
+    }
+
+    private class AsyncExecutionFuture<T>
+    implements Future<T>
+    {
+        private final Future<Response> responseFuture;
+        private boolean isDone;
+
+        private final RequestBuilder requestBuilder;
+        private final LayerCollection layers;
+        private final ResponseReadingStrategy responseReadingStrategy;
+        private final Class<T> tClass;
+
+        private AsyncExecutionFuture(Future<Response> responseFuture, RequestBuilder requestBuilder, LayerCollection layers, ResponseReadingStrategy responseReadingStrategy, Class<T> tClass)
+        {
+            this.responseFuture = responseFuture;
+            this.isDone = false;
+
+            this.requestBuilder = requestBuilder;
+
+            this.layers = layers;
+            this.responseReadingStrategy = responseReadingStrategy;
+
+            this.tClass = tClass;
+        }
+
+
+        @Override
+        public boolean cancel(boolean mayInterruptIfRunning)
+        {
+            final boolean canCancel = responseFuture.cancel(mayInterruptIfRunning);
+            return canCancel;
+        }
+
+        @Override
+        public boolean isCancelled()
+        {
+            final boolean isCancelled = responseFuture.isCancelled();
+            return isCancelled;
+        }
+
+        @Override
+        public boolean isDone()
+        {
+            return isDone;
+        }
+
+        @Override
+        public T get()
+        throws InterruptedException, ExecutionException
+        {
+            final Response response = responseFuture.get();
+
+            final T responseEntity = afterExecution(requestBuilder, layers, responseReadingStrategy, response, tClass);
+            return responseEntity;
+        }
+
+        @Override
+        public T get(long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException
+        {
+            final Response response = responseFuture.get(timeout, unit);
+
+            final T responseEntity = afterExecution(requestBuilder, layers, responseReadingStrategy, response, tClass);
+            return responseEntity;
         }
     }
 }

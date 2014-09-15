@@ -96,12 +96,6 @@ public class BoxApi
         }
 
         @Override
-        public void setOAuth2Token(OAuth2Token token)
-        {
-            BoxApi.this.token = token;
-        }
-
-        @Override
         public String getOAuth2Url()
         {
             return "https://api.box.com/oauth2/token";

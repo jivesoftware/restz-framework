@@ -19,7 +19,6 @@ extends AbstractOAuth2Layer<OAuth2Client, OAuth2Token>
                 .setParam("client_secret", getOAuth2Client().getClientSecret());
 
             OAuth2Token token = getResTZ().execute(tokenRefreshRequestBuilder, OAuth2Token.class);
-            setOAuth2Token(token);
             return token;
         }
     }

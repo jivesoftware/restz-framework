@@ -141,12 +141,6 @@ public class OfficeApi
         }
 
         @Override
-        public void setOAuth2Token(OfficeOAuth2Token token)
-        {
-            OfficeApi.this.token = token;
-        }
-
-        @Override
         public String getOAuth2Url()
         {
             return getOAuth2Client().getServiceUrl();
