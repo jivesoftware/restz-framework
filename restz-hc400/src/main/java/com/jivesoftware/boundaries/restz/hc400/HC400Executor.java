@@ -126,8 +126,10 @@ implements Executor
 
         else
         if(entity instanceof InputStream)
-            httpEntity = new InputStreamEntity((InputStream) entity, -1);
-
+        {
+            Long streamLength = requestBuilder.getStreamLength();
+            httpEntity = new InputStreamEntity((InputStream) entity, streamLength != null ? streamLength : -1);
+        }
         else
         if(entity instanceof File)
         {

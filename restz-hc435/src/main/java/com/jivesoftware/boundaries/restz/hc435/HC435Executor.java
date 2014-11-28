@@ -115,8 +115,14 @@ implements Executor
 
         else
         if(entity instanceof InputStream)
-            httpEntity = new InputStreamEntity((InputStream) entity);
+        {
+            Long streamLength = requestBuilder.getStreamLength();
+            if(streamLength == null)
+                httpEntity = new InputStreamEntity((InputStream) entity);
 
+            else
+                httpEntity = new InputStreamEntity((InputStream) entity, streamLength);
+        }
         else
         if(entity instanceof byte[])
             httpEntity = new ByteArrayEntity((byte[]) entity);
