@@ -2,6 +2,7 @@ package com.jivesoftware.boundaries.restz;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class RequestBuilder
     private Map<String, String> params;
 
     private Object entity;
+    private Long streamLength;
 
     public RequestBuilder(String url, HttpVerb httpVerb)
     {
@@ -104,6 +106,21 @@ public class RequestBuilder
     public RequestBuilder setEntity(Object entity)
     {
         this.entity = entity;
+        this.streamLength = null;
+
+        return this;
+    }
+
+    public Long getStreamLength()
+    {
+        return streamLength;
+    }
+
+    public RequestBuilder setEntity(InputStream in, long streamLength)
+    {
+        this.entity = in;
+        this.streamLength = streamLength;
+
         return this;
     }
 }
