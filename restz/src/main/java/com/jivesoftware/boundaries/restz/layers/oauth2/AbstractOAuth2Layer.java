@@ -22,9 +22,7 @@ implements ExecutionWrapperLayer, RecoverableFailureLayer
     public abstract ResTZ getResTZ();
 
     public abstract C getOAuth2Client();
-
     public abstract T getOAuth2Token();
-    public abstract void setOAuth2Token(T oauth2Token);
 
     public abstract String getOAuth2Url();
 
@@ -52,8 +50,6 @@ implements ExecutionWrapperLayer, RecoverableFailureLayer
             {
                 T token = refreshToken();
                 log.log(Level.INFO, token.getAccess_token() + " | " + token.getRefresh_token());
-
-                setOAuth2Token(token);
 
                 return true;
             }
