@@ -7,7 +7,7 @@
 
     <groupId>com.jivesoftware.boundaries</groupId>
     <artifactId>restz-framework</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1-RELEASE</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -16,7 +16,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <restz.version>1.1-SNAPSHOT</restz.version>
+        <restz.version>1.1-RELEASE</restz.version>
     </properties>
 
     <modules>
@@ -43,21 +43,7 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+         </plugins>
     </build>
 
 </project>
