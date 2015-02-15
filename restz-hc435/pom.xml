@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.jivesoftware.boundaries</groupId>
             <artifactId>restz</artifactId>
-            <version>${restz-version}</version>
+            <version>${restz.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -42,4 +42,23 @@
             <version>${http-client-version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <descriptorId>jar-with-dependencies</descriptorId>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
