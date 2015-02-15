@@ -57,6 +57,7 @@
                 </executions>
                 <configuration>
                     <descriptorId>jar-with-dependencies</descriptorId>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
             </plugin>
         </plugins>
