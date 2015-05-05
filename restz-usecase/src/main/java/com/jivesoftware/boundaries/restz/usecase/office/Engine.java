@@ -11,6 +11,8 @@ import com.jivesoftware.boundaries.restz.usecase.office.api.models.creation.Fold
 import com.jivesoftware.boundaries.restz.usecase.office.api.models.creation.SiteCreationResponse;
 import com.jivesoftware.boundaries.restz.usecase.office.restz.OfficeOAuth2Client;
 import com.jivesoftware.boundaries.restz.usecase.office.restz.OfficeOAuth2Token;
+import com.jivesoftware.boundaries.serializing.GsonSerializer;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -31,8 +33,9 @@ public class Engine
     public static void main(String[] args)
     {
         // Injection Code
-        HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
+        final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
+        final Serializer serializer = new GsonSerializer();
+        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager, serializer);
 
         final InstanceProperties instanceProperties = prepareInstanceProperties();
 

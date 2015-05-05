@@ -1,9 +1,9 @@
 package com.jivesoftware.boundaries.restz.hc400;
 
-import com.google.gson.Gson;
 import com.jivesoftware.boundaries.restz.*;
 import com.jivesoftware.boundaries.restz.exceptions.CheckedAsRuntimeException;
 import com.jivesoftware.boundaries.restz.multipart.*;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -40,11 +40,15 @@ implements Executor
     private static final Logger log = Logger.getLogger(HC400Executor.class.getSimpleName());
 
     private final HttpClient httpClient;
+    private final Serializer serializer;
+
     private InputStream lastContent;
 
-    HC400Executor(HttpClient httpClient)
+    HC400Executor(HttpClient httpClient, Serializer serializer)
     {
         this.httpClient = httpClient;
+        this.serializer = serializer;
+
         this.lastContent = null;
     }
 
@@ -290,14 +294,12 @@ implements Executor
         }
     }
 
-    private static HttpEntity serializeAsRequestEntity(Object o)
+    protected HttpEntity serializeAsRequestEntity(Object obj)
     {
         try
         {
-            Gson gson = new Gson();
-            String json = gson.toJson(o);
-
-            return new StringEntity(json);
+            final String objAsJson = serializer.serialize(obj);
+            return new StringEntity(objAsJson);
         }
         catch (UnsupportedEncodingException e)
         {

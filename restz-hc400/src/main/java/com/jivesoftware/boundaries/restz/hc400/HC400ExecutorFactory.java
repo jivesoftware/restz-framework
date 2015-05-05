@@ -2,6 +2,7 @@ package com.jivesoftware.boundaries.restz.hc400;
 
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,17 +21,19 @@ implements ExecutorFactory
     private final static Logger log = Logger.getLogger(HC400ExecutorFactory.class.getSimpleName());
 
     protected final ClientConnectionManager clientConnectionManager;
+    protected final Serializer serializer;
 
-    public HC400ExecutorFactory(ClientConnectionManager clientConnectionManager)
+    public HC400ExecutorFactory(ClientConnectionManager clientConnectionManager, Serializer serializer)
     {
         this.clientConnectionManager = clientConnectionManager;
+        this.serializer = serializer;
     }
 
     public Executor get()
     {
         final HttpClient httpClient = new DefaultHttpClient(clientConnectionManager, new BasicHttpParams());
 
-        final Executor executor = new HC400Executor(httpClient);
+        final Executor executor = new HC400Executor(httpClient, serializer);
         return executor;
     }
 

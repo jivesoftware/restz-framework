@@ -2,6 +2,7 @@ package com.jivesoftware.boundaries.restz.hc435;
 
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,10 +21,12 @@ implements ExecutorFactory
     private final static Logger log = Logger.getLogger(HC435ExecutorFactory.class.getSimpleName());
 
     protected final HttpClientConnectionManager httpClientConnectionManager;
+    protected final Serializer serializer;
 
-    public HC435ExecutorFactory(HttpClientConnectionManager httpClientConnectionManager)
+    public HC435ExecutorFactory(HttpClientConnectionManager httpClientConnectionManager, Serializer serializer)
     {
         this.httpClientConnectionManager = httpClientConnectionManager;
+        this.serializer = serializer;
     }
 
     public Executor get()
@@ -41,7 +44,7 @@ implements ExecutorFactory
             .setSSLSocketFactory(SSLConnectionSocketFactory.getSocketFactory())
             .build();
 
-        return new HC435Executor(httpClient);
+        return new HC435Executor(httpClient, serializer);
     }
 
     public void debug()
