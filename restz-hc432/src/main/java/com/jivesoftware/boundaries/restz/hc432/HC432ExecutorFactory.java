@@ -2,6 +2,7 @@ package com.jivesoftware.boundaries.restz.hc432;
 
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
+import com.jivesoftware.boundaries.serializing.GsonSerializer;
 import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -22,6 +23,11 @@ implements ExecutorFactory
 
     protected final HttpClientConnectionManager httpClientConnectionManager;
     protected final Serializer serializer;
+
+    public HC432ExecutorFactory(HttpClientConnectionManager httpClientConnectionManager)
+    {
+        this(httpClientConnectionManager, new GsonSerializer());
+    }
 
     public HC432ExecutorFactory(HttpClientConnectionManager httpClientConnectionManager, Serializer serializer)
     {

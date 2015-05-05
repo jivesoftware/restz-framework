@@ -34,8 +34,7 @@ public class Engine
     {
         // Injection Code
         final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        final Serializer serializer = new GsonSerializer();
-        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager, serializer);
+        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
 
         final InstanceProperties instanceProperties = prepareInstanceProperties();
 

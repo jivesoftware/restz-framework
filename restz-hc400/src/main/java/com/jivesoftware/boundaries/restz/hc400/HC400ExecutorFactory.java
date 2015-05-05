@@ -2,6 +2,7 @@ package com.jivesoftware.boundaries.restz.hc400;
 
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
+import com.jivesoftware.boundaries.serializing.GsonSerializer;
 import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
@@ -22,6 +23,11 @@ implements ExecutorFactory
 
     protected final ClientConnectionManager clientConnectionManager;
     protected final Serializer serializer;
+
+    public HC400ExecutorFactory(ClientConnectionManager clientConnectionManager)
+    {
+        this(clientConnectionManager, new GsonSerializer());
+    }
 
     public HC400ExecutorFactory(ClientConnectionManager clientConnectionManager, Serializer serializer)
     {
