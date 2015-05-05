@@ -15,7 +15,7 @@ Add the any one of the ResTZ HttpClient connectors as a maven dependency to your
 <dependency>
 	<groupId>com.jivesoftware.boundaries.restz</groupId>
 	<artifactId>restz-hc435</artifactId>
-	<version>1.1-RELEASE</version>
+	<version>1.2-RELEASE</version>
 </dependency>
 ```
 
