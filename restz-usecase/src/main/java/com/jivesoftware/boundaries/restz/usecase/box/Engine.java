@@ -32,8 +32,7 @@ public final class Engine
     {
         // Injection Code
         final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        final Serializer serializer = new GsonSerializer();
-        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager, serializer);
+        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
 
         final OAuth2Client client = prepareOAuth2Client();
         final OAuth2Token token = prepareOAuth2Token();
