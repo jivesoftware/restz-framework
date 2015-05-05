@@ -9,6 +9,8 @@ import com.jivesoftware.boundaries.restz.layers.oauth2.OAuth2Token;
 import com.jivesoftware.boundaries.restz.usecase.box.api.BoxApi;
 import com.jivesoftware.boundaries.restz.usecase.box.api.models.BoxFile;
 import com.jivesoftware.boundaries.restz.usecase.box.api.models.BoxFolder;
+import com.jivesoftware.boundaries.serializing.GsonSerializer;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -29,20 +31,20 @@ public final class Engine
     public static void main(String[] args)
     {
         // Injection Code
-        HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
+        final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
+        final Serializer serializer = new GsonSerializer();
+        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager, serializer);
 
-        OAuth2Client client = prepareOAuth2Client();
-        OAuth2Token token = prepareOAuth2Token();
+        final OAuth2Client client = prepareOAuth2Client();
+        final OAuth2Token token = prepareOAuth2Token();
 
         // ResTZ Example Code
         final Executor executor = executorFactory.get();
         final ResTZ restz = new ResTZ(executor);
+        final BoxApi boxApi = new BoxApi(restz, client, token);
 
-        BoxApi boxApi = new BoxApi(restz, client, token);
-
-        BoxFolder boxFolder = boxApi.createFolder("top-level-folder", "0");
-        BoxFile boxFile = boxApi.uploadFile(boxFolder.getId(), new File("/test/test.zip"));
+        final BoxFolder boxFolder = boxApi.createFolder("top-level-folder", "0");
+        final BoxFile boxFile = boxApi.uploadFile(boxFolder.getId(), new File("/test/test.zip"));
         downloadFile(boxApi, boxFile.getId(), "/test/test-downloaded.zip");
     }
 

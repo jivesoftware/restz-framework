@@ -7,16 +7,16 @@
 
     <groupId>com.jivesoftware.boundaries</groupId>
     <artifactId>restz-framework</artifactId>
-    <version>1.1-RELEASE</version>
+    <version>1.2-RELEASE</version>
     <packaging>pom</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>1.7</java.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <restz.version>1.1-RELEASE</restz.version>
+        <restz.version>${project.version}</restz.version>
     </properties>
 
     <modules>
@@ -43,7 +43,6 @@
                     </execution>
                 </executions>
             </plugin>
-         </plugins>
+        </plugins>
     </build>
-
 </project>

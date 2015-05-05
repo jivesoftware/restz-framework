@@ -1,10 +1,10 @@
 package com.jivesoftware.boundaries.restz.hc435;
 
-import com.google.gson.Gson;
 import com.jivesoftware.boundaries.restz.*;
 import com.jivesoftware.boundaries.restz.RequestBuilder;
 import com.jivesoftware.boundaries.restz.exceptions.CheckedAsRuntimeException;
 import com.jivesoftware.boundaries.restz.multipart.*;
+import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -36,10 +36,12 @@ implements Executor
     private final static Logger log = Logger.getLogger(HC435Executor.class.getSimpleName());
 
     private final HttpClient httpClient;
+    private final Serializer serializer;
 
-    public HC435Executor(HttpClient httpClient)
+    public HC435Executor(HttpClient httpClient, Serializer serializer)
     {
         this.httpClient = httpClient;
+        this.serializer = serializer;
     }
 
     @Override
@@ -297,11 +299,17 @@ implements Executor
         }
     }
 
-    private static HttpEntity serializeAsRequestEntity(Object o)
+    protected HttpEntity serializeAsRequestEntity(Object obj)
     {
-        Gson gson = new Gson();
-        String json = gson.toJson(o);
-
-        return new StringEntity(json, "UTF-8");
+        try
+        {
+            final String objAsJson = serializer.serialize(obj);
+            return new StringEntity(objAsJson);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.log(Level.WARNING, "Failed to serialize request entity - " + e.getMessage());
+            throw new CheckedAsRuntimeException("Failed to serialize request entity - " + e.getMessage(), e);
+        }
     }
 }
