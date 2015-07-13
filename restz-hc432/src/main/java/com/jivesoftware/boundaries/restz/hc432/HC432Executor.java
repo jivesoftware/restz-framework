@@ -216,7 +216,9 @@ implements Executor
                     formParams.add(new BasicNameValuePair(name, value));
                 }
 
-                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(formParams);
+                final String encoding = requestBuilder.getEncoding();
+                final UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(formParams, encoding);
+
                 return formEntity;
             }
             catch (UnsupportedEncodingException e)

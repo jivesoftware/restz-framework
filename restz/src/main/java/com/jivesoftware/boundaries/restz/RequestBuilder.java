@@ -19,6 +19,8 @@ public class RequestBuilder
     private MultivaluedMap<String, String> headers;
     private Map<String, String> params;
 
+    private String encoding;
+
     private Object entity;
     private Long streamLength;
 
@@ -27,8 +29,10 @@ public class RequestBuilder
         this.url = url;
         this.httpVerb = httpVerb;
 
-        headers = new MultivaluedHashMap<>();
-        params = new HashMap<>();
+        this.headers = new MultivaluedHashMap<>();
+        this.params = new HashMap<>();
+
+        this.encoding = "utf-8";
     }
 
     public String getUrl()
@@ -96,6 +100,16 @@ public class RequestBuilder
     {
         params.remove(name);
         return this;
+    }
+
+    public String getEncoding()
+    {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding)
+    {
+        this.encoding = encoding;
     }
 
     public Object getEntity()
