@@ -3,14 +3,12 @@ package com.jivesoftware.boundaries.restz.usecase.box;
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
 import com.jivesoftware.boundaries.restz.ResTZ;
-import com.jivesoftware.boundaries.restz.hc435.HC435ExecutorFactory;
+import com.jivesoftware.boundaries.restz.hc450.HC450ExecutorFactory;
 import com.jivesoftware.boundaries.restz.layers.oauth2.OAuth2Client;
 import com.jivesoftware.boundaries.restz.layers.oauth2.OAuth2Token;
 import com.jivesoftware.boundaries.restz.usecase.box.api.BoxApi;
 import com.jivesoftware.boundaries.restz.usecase.box.api.models.BoxFile;
 import com.jivesoftware.boundaries.restz.usecase.box.api.models.BoxFolder;
-import com.jivesoftware.boundaries.serializing.GsonSerializer;
-import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -32,7 +30,7 @@ public final class Engine
     {
         // Injection Code
         final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
+        final ExecutorFactory executorFactory = new HC450ExecutorFactory(httpClientConnectionManager);
 
         final OAuth2Client client = prepareOAuth2Client();
         final OAuth2Token token = prepareOAuth2Token();

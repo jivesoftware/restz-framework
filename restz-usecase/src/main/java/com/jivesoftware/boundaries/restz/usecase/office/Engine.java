@@ -3,7 +3,7 @@ package com.jivesoftware.boundaries.restz.usecase.office;
 import com.jivesoftware.boundaries.restz.Executor;
 import com.jivesoftware.boundaries.restz.ExecutorFactory;
 import com.jivesoftware.boundaries.restz.ResTZ;
-import com.jivesoftware.boundaries.restz.hc435.HC435ExecutorFactory;
+import com.jivesoftware.boundaries.restz.hc450.HC450ExecutorFactory;
 import com.jivesoftware.boundaries.restz.usecase.office.api.InstanceProperties;
 import com.jivesoftware.boundaries.restz.usecase.office.api.OfficeApi;
 import com.jivesoftware.boundaries.restz.usecase.office.api.models.creation.FileUploadResponse;
@@ -11,8 +11,6 @@ import com.jivesoftware.boundaries.restz.usecase.office.api.models.creation.Fold
 import com.jivesoftware.boundaries.restz.usecase.office.api.models.creation.SiteCreationResponse;
 import com.jivesoftware.boundaries.restz.usecase.office.restz.OfficeOAuth2Client;
 import com.jivesoftware.boundaries.restz.usecase.office.restz.OfficeOAuth2Token;
-import com.jivesoftware.boundaries.serializing.GsonSerializer;
-import com.jivesoftware.boundaries.serializing.Serializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -34,7 +32,7 @@ public class Engine
     {
         // Injection Code
         final HttpClientConnectionManager httpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        final ExecutorFactory executorFactory = new HC435ExecutorFactory(httpClientConnectionManager);
+        final ExecutorFactory executorFactory = new HC450ExecutorFactory(httpClientConnectionManager);
 
         final InstanceProperties instanceProperties = prepareInstanceProperties();
 
