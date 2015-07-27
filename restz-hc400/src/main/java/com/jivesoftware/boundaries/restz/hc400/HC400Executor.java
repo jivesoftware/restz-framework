@@ -143,7 +143,10 @@ implements Executor
             httpEntity = new FileEntity(entityAsFile, contentType);
         }
         else
-            httpEntity = serializeAsRequestEntity(entity);
+        {
+            final String encoding = requestBuilder.getEncoding();
+            httpEntity = serializeAsRequestEntity(entity, encoding);
+        }
 
         return httpEntity;
     }
@@ -296,17 +299,22 @@ implements Executor
         }
     }
 
-    protected HttpEntity serializeAsRequestEntity(Object obj)
+    protected HttpEntity serializeAsRequestEntity(Object obj, String encoding)
     {
         try
         {
             final String objAsJson = serializer.serialize(obj);
-            return new StringEntity(objAsJson);
+            return new StringEntity(objAsJson, encoding);
         }
         catch (UnsupportedEncodingException e)
         {
             log.log(Level.WARNING, "Failed to serialize request entity - " + e.getMessage());
             throw new CheckedAsRuntimeException("Failed to serialize request entity - " + e.getMessage(), e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            log.log(Level.WARNING, "Cannot serialize a null request entity - " + e.getMessage());
+            throw e;
         }
     }
 }

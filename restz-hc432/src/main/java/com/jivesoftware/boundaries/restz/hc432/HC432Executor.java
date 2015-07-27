@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -138,7 +139,10 @@ implements Executor
             httpEntity = new FileEntity(entityAsFile, ContentType.create(contentType));
         }
         else
-            httpEntity = serializeAsRequestEntity(entity);
+        {
+            final String encoding = requestBuilder.getEncoding();
+            httpEntity = serializeAsRequestEntity(entity, encoding);
+        }
 
         return httpEntity;
     }
@@ -301,17 +305,22 @@ implements Executor
         }
     }
 
-    protected HttpEntity serializeAsRequestEntity(Object obj)
+    protected HttpEntity serializeAsRequestEntity(Object obj, String encoding)
     {
         try
         {
             final String objAsJson = serializer.serialize(obj);
-            return new StringEntity(objAsJson);
+            return new StringEntity(objAsJson, encoding);
         }
-        catch (UnsupportedEncodingException e)
+        catch (UnsupportedCharsetException e)
         {
             log.log(Level.WARNING, "Failed to serialize request entity - " + e.getMessage());
             throw new CheckedAsRuntimeException("Failed to serialize request entity - " + e.getMessage(), e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            log.log(Level.WARNING, "Cannot serialize a null request entity - " + e.getMessage());
+            throw e;
         }
     }
 }
